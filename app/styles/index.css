@@ -7,6 +7,17 @@
 @tailwind utilities;
 
 /* hide trading rewards on mobile */
-.oui-portfolio-page .oui-box.oui-flex.oui-flex-nowrap > div:nth-child(2).oui-box.oui-flex.oui-justify-start.oui-flex-nowrap.oui-relative {
+.oui-portfolio-page .oui-box.oui-flex.oui-flex-nowrap>div:nth-child(2).oui-box.oui-flex.oui-justify-start.oui-flex-nowrap.oui-relative {
   display: none;
+}
+
+html,
+body {
+  background-color: rgb(var(--oui-color-base-9));
+  color: rgb(var(--oui-color-base-foreground));
+}
+
+/* Force hide default Orderly footer logo by attribute matching */
+footer svg[width="45"][height="14"] {
+  display: none !important;
 }

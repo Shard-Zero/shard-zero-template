@@ -4,8 +4,8 @@
 
 import { getRuntimeConfig } from "./runtime-config";
 
-// Get the base path from environment variable or default to '/'
-export const BASE_PATH = getRuntimeConfig("VITE_BASE_URL") || "/";
+// Get the base path from environment variable, Vite config, or default to '/'
+export const BASE_PATH = getRuntimeConfig("VITE_BASE_URL") || import.meta.env.BASE_URL || "/";
 
 /**
  * Prefixes a path with the base path
