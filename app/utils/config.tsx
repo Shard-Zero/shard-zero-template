@@ -268,7 +268,15 @@ export const useOrderlyConfig = () => {
           telegramUrl: getRuntimeConfig('VITE_TELEGRAM_URL') || undefined,
           discordUrl: getRuntimeConfig('VITE_DISCORD_URL') || undefined,
           twitterUrl: getRuntimeConfig('VITE_TWITTER_URL') || undefined,
-          trailing: <PriceCarousel />,
+          trailing: (
+            <div className="oui-flex oui-items-center oui-gap-4 oui-flex-1 oui-min-w-0">
+              <PriceCarousel />
+              <div className="oui-flex oui-items-center oui-gap-1 oui-text-2xs oui-text-base-contrast-54 oui-whitespace-nowrap">
+                <span>Powered by</span>
+                <span className="oui-font-bold">ShardLabs</span>
+              </div>
+            </div>
+          ),
         },
       },
       orderlyAppProvider: {
