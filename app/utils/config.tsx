@@ -235,82 +235,65 @@ export const useOrderlyConfig = () => {
     mainNavProps.customRender = (components) => {
       return (
         <Flex justify="between" className="oui-w-full">
-          <Flex
-            itemAlign={"center"}
-            className={cn(
-              "oui-gap-3",
-              "oui-overflow-hidden",
-            )}
-          >
-            <Link to="/" className="oui-flex oui-items-center oui-mr-4">
-              {isMobile && getRuntimeConfigBoolean('VITE_HAS_SECONDARY_LOGO')
-                ? <img src={withBasePath(getRuntimeConfig('VITE_SECONDARY_LOGO_PATH') || "/logo-secondary.webp")} alt="logo" style={{ height: "32px" }} />
-                : getRuntimeConfigBoolean('VITE_HAS_PRIMARY_LOGO')
-                  ? <img src={withBasePath(getRuntimeConfig('VITE_PRIMARY_LOGO_PATH') || "/logo.webp")} alt="logo" style={{ height: "32px", display: "block" }} />
-                  : <img src={withBasePath("/shard-logo.svg")} alt="logo" style={{ height: "24px", display: "block" }} />
-              }
-            </Link>
-            {components.mainNav}
-          </Flex>
+          import {getAppIcons, getNavbarLogo, getSocialLinks} from "../configs/branding";
 
-          <Flex itemAlign={"center"} className="oui-gap-2">
-            {components.accountSummary}
-            {components.linkDevice}
-            {components.scanQRCode}
-            {components.languageSwitcher}
-            {components.subAccount}
-            {components.chainMenu}
-            {components.walletConnect}
+// ... [Keep other imports]
+
+// Inside useOrderlyConfig:
+    mainNavProps.customRender = (components) => {
+      return (
+          <Flex justify="between" className="oui-w-full">
+            <Flex
+              itemAlign={"center"}
+              className={cn(
+                "oui-gap-3",
+                "oui-overflow-hidden",
+              )}
+            >
+              <Link to="/" className="oui-flex oui-items-center oui-mr-4">
+                {getNavbarLogo(isMobile)}
+              </Link>
+              {components.mainNav}
+            </Flex>
+            {/* ... */}
           </Flex>
-        </Flex>
-      )
+          )
     };
 
-    return {
-      scaffold: {
-        mainNavProps,
-        bottomNavProps: {
-          mainMenus: bottomNavMenus,
+          return {
+            scaffold: {
+            mainNavProps,
+            bottomNavProps: {
+            mainMenus: bottomNavMenus,
         },
-        footerProps: {
-          telegramUrl: getRuntimeConfig('VITE_TELEGRAM_URL') || undefined,
-          discordUrl: getRuntimeConfig('VITE_DISCORD_URL') || undefined,
-          twitterUrl: getRuntimeConfig('VITE_TWITTER_URL') || undefined,
-          trailing: (
-            <div className="oui-flex oui-items-center oui-gap-4 oui-flex-1 oui-min-w-0">
-              <PriceCarousel />
-              <div className="oui-flex oui-items-center oui-gap-1 oui-text-2xs oui-text-base-contrast-54 oui-whitespace-nowrap">
-                <span>Powered by</span>
-                <span className="oui-font-bold">ShardLabs</span>
-              </div>
+          footerProps: {
+            ...getSocialLinks(), // telegram, discord, twitter
+            trailing: (
+          <div className="oui-flex oui-items-center oui-gap-4 oui-flex-1 oui-min-w-0">
+            <PriceCarousel />
+            <div className="oui-flex oui-items-center oui-gap-1 oui-text-2xs oui-text-base-contrast-54 oui-whitespace-nowrap">
+              <span>Powered by</span>
+              <span className="oui-font-bold">ShardLabs</span>
             </div>
+          </div>
           ),
           logo: null,
           copyright: null,
         },
       },
-      orderlyAppProvider: {
-        appIcons: {
-          main:
-            getRuntimeConfigBoolean('VITE_HAS_PRIMARY_LOGO')
-              ? { component: <img src={withBasePath(getRuntimeConfig('VITE_PRIMARY_LOGO_PATH') || "/logo.webp")} alt="logo" style={{ height: "42px" }} /> }
-              : { img: withBasePath("/shard-logo.svg") },
-          secondary: {
-            img: getRuntimeConfigBoolean('VITE_HAS_SECONDARY_LOGO')
-              ? withBasePath(getRuntimeConfig('VITE_SECONDARY_LOGO_PATH') || "/logo-secondary.webp")
-              : withBasePath("/shard-logo-secondary.svg"),
-          },
-        },
+          orderlyAppProvider: {
+            appIcons: getAppIcons(),
       },
-      tradingPage: {
-        tradingViewConfig: {
-          scriptSRC: withBasePath("/tradingview/charting_library/charting_library.js"),
+          // ...
+          tradingPage: {
+            tradingViewConfig: {
+            scriptSRC: withBasePath("/tradingview/charting_library/charting_library.js"),
           library_path: withBasePath("/tradingview/charting_library/"),
           customCssUrl: withBasePath("/tradingview/chart.css"),
           colorConfig: getColorConfig(),
         },
-        sharePnLConfig: {
-          backgroundImages: getPnLBackgroundImages(),
+          sharePnLConfig: {
+            backgroundImages: getPnLBackgroundImages(),
           color: "rgba(255, 255, 255, 0.98)",
           profitColor: "rgba(41, 223, 169, 1)",
           lossColor: "rgba(245, 97, 139, 1)",
