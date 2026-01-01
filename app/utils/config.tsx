@@ -268,113 +268,112 @@ export const useOrderlyConfig = () => {
             {components.walletConnect}
           </Flex>
         </Flex>
-        </Flex >
       )
     };
 
-// 01.xyz Alignment: Strict Home Page Isolation
-if (isHomePage) {
-  return {
-    scaffold: {
-      mainNavProps: {
-        ...mainNavProps,
-        // Force minimal navbar for Home
-        customRender: (components) => (
-          <HomeNavbar
-            components={components}
-            menus={translatedEnabledMenus}
-            customMenus={customMenus}
-            socials={{
-              twitter: getRuntimeConfig('VITE_TWITTER_URL'),
-              discord: getRuntimeConfig('VITE_DISCORD_URL'),
-              telegram: getRuntimeConfig('VITE_TELEGRAM_URL'),
-            }}
-          />
-        )
-      },
-      // HIDE Mobile Nav on Home
-      bottomNavProps: undefined,
-      // Disable Scaffold Footer entirely on Home to prevent sticky lines
-      footerProps: undefined,
-    },
-    orderlyAppProvider: {
-      appIcons: {
-        main:
-          getRuntimeConfigBoolean('VITE_HAS_PRIMARY_LOGO')
-            ? { component: <img src={withBasePath(getRuntimeConfig('VITE_PRIMARY_LOGO_PATH') || "/logo.webp")} alt="logo" style={{ height: "42px", display: "block", width: "auto" }} /> }
-            : { component: <img src={withBasePath("/shard.svg")} alt="logo" style={{ height: "36px", display: "block", width: "auto" }} /> },
-        secondary: {
-          img: getRuntimeConfigBoolean('VITE_HAS_SECONDARY_LOGO')
-            ? withBasePath(getRuntimeConfig('VITE_SECONDARY_LOGO_PATH') || "/logo-secondary.webp")
-            : withBasePath("/shard-logo-secondary.svg"),
+    // 01.xyz Alignment: Strict Home Page Isolation
+    if (isHomePage) {
+      return {
+        scaffold: {
+          mainNavProps: {
+            ...mainNavProps,
+            // Force minimal navbar for Home
+            customRender: (components) => (
+              <HomeNavbar
+                components={components}
+                menus={translatedEnabledMenus}
+                customMenus={customMenus}
+                socials={{
+                  twitter: getRuntimeConfig('VITE_TWITTER_URL'),
+                  discord: getRuntimeConfig('VITE_DISCORD_URL'),
+                  telegram: getRuntimeConfig('VITE_TELEGRAM_URL'),
+                }}
+              />
+            )
+          },
+          // HIDE Mobile Nav on Home
+          bottomNavProps: undefined,
+          // Disable Scaffold Footer entirely on Home to prevent sticky lines
+          footerProps: undefined,
+        },
+        orderlyAppProvider: {
+          appIcons: {
+            main:
+              getRuntimeConfigBoolean('VITE_HAS_PRIMARY_LOGO')
+                ? { component: <img src={withBasePath(getRuntimeConfig('VITE_PRIMARY_LOGO_PATH') || "/logo.webp")} alt="logo" style={{ height: "42px", display: "block", width: "auto" }} /> }
+                : { component: <img src={withBasePath("/shard.svg")} alt="logo" style={{ height: "36px", display: "block", width: "auto" }} /> },
+            secondary: {
+              img: getRuntimeConfigBoolean('VITE_HAS_SECONDARY_LOGO')
+                ? withBasePath(getRuntimeConfig('VITE_SECONDARY_LOGO_PATH') || "/logo-secondary.webp")
+                : withBasePath("/shard-logo-secondary.svg"),
+            },
+          },
+        },
+        tradingPage: {
+          tradingViewConfig: {
+            scriptSRC: withBasePath("/tradingview/charting_library/charting_library.js"),
+            library_path: withBasePath("/tradingview/charting_library/"),
+            customCssUrl: withBasePath("/tradingview/chart.css"),
+            colorConfig: getColorConfig(),
+          },
+          sharePnLConfig: {
+            backgroundImages: getPnLBackgroundImages(),
+            color: "rgba(255, 255, 255, 0.98)",
+            profitColor: "rgba(41, 223, 169, 1)",
+            lossColor: "rgba(245, 97, 139, 1)",
+            brandColor: "rgba(255, 255, 255, 0.98)",
+            // ref
+            refLink: typeof window !== 'undefined' ? window.location.origin : undefined,
+            refSlogan: getRuntimeConfig('VITE_ORDERLY_BROKER_NAME') || "Shard DEX",
+          },
+        },
+      };
+    }
+
+    return {
+      scaffold: {
+        mainNavProps,
+        bottomNavProps: {
+          mainMenus: bottomNavMenus,
+        },
+        footerProps: {
+          telegramUrl: getRuntimeConfig('VITE_TELEGRAM_URL') || undefined,
+          discordUrl: getRuntimeConfig('VITE_DISCORD_URL') || undefined,
+          twitterUrl: getRuntimeConfig('VITE_TWITTER_URL') || undefined,
+          trailing: <PriceCarousel />,
         },
       },
-    },
-    tradingPage: {
-      tradingViewConfig: {
-        scriptSRC: withBasePath("/tradingview/charting_library/charting_library.js"),
-        library_path: withBasePath("/tradingview/charting_library/"),
-        customCssUrl: withBasePath("/tradingview/chart.css"),
-        colorConfig: getColorConfig(),
+      orderlyAppProvider: {
+        appIcons: {
+          main:
+            getRuntimeConfigBoolean('VITE_HAS_PRIMARY_LOGO')
+              ? { component: <img src={withBasePath(getRuntimeConfig('VITE_PRIMARY_LOGO_PATH') || "/logo.webp")} alt="logo" style={{ height: "42px" }} /> }
+              : { img: withBasePath("/shard-logo.svg") },
+          secondary: {
+            img: getRuntimeConfigBoolean('VITE_HAS_SECONDARY_LOGO')
+              ? withBasePath(getRuntimeConfig('VITE_SECONDARY_LOGO_PATH') || "/logo-secondary.webp")
+              : withBasePath("/shard-logo-secondary.svg"),
+          },
+        },
       },
-      sharePnLConfig: {
-        backgroundImages: getPnLBackgroundImages(),
-        color: "rgba(255, 255, 255, 0.98)",
-        profitColor: "rgba(41, 223, 169, 1)",
-        lossColor: "rgba(245, 97, 139, 1)",
-        brandColor: "rgba(255, 255, 255, 0.98)",
-        // ref
-        refLink: typeof window !== 'undefined' ? window.location.origin : undefined,
-        refSlogan: getRuntimeConfig('VITE_ORDERLY_BROKER_NAME') || "Shard DEX",
+      tradingPage: {
+        tradingViewConfig: {
+          scriptSRC: withBasePath("/tradingview/charting_library/charting_library.js"),
+          library_path: withBasePath("/tradingview/charting_library/"),
+          customCssUrl: withBasePath("/tradingview/chart.css"),
+          colorConfig: getColorConfig(),
+        },
+        sharePnLConfig: {
+          backgroundImages: getPnLBackgroundImages(),
+          color: "rgba(255, 255, 255, 0.98)",
+          profitColor: "rgba(41, 223, 169, 1)",
+          lossColor: "rgba(245, 97, 139, 1)",
+          brandColor: "rgba(255, 255, 255, 0.98)",
+          // ref
+          refLink: typeof window !== 'undefined' ? window.location.origin : undefined,
+          refSlogan: getRuntimeConfig('VITE_ORDERLY_BROKER_NAME') || "Orderly Network",
+        },
       },
-    },
-  };
-}
-
-return {
-  scaffold: {
-    mainNavProps,
-    bottomNavProps: {
-      mainMenus: bottomNavMenus,
-    },
-    footerProps: {
-      telegramUrl: getRuntimeConfig('VITE_TELEGRAM_URL') || undefined,
-      discordUrl: getRuntimeConfig('VITE_DISCORD_URL') || undefined,
-      twitterUrl: getRuntimeConfig('VITE_TWITTER_URL') || undefined,
-      trailing: <PriceCarousel />,
-    },
-  },
-  orderlyAppProvider: {
-    appIcons: {
-      main:
-        getRuntimeConfigBoolean('VITE_HAS_PRIMARY_LOGO')
-          ? { component: <img src={withBasePath(getRuntimeConfig('VITE_PRIMARY_LOGO_PATH') || "/logo.webp")} alt="logo" style={{ height: "42px" }} /> }
-          : { img: withBasePath("/shard-logo.svg") },
-      secondary: {
-        img: getRuntimeConfigBoolean('VITE_HAS_SECONDARY_LOGO')
-          ? withBasePath(getRuntimeConfig('VITE_SECONDARY_LOGO_PATH') || "/logo-secondary.webp")
-          : withBasePath("/shard-logo-secondary.svg"),
-      },
-    },
-  },
-  tradingPage: {
-    tradingViewConfig: {
-      scriptSRC: withBasePath("/tradingview/charting_library/charting_library.js"),
-      library_path: withBasePath("/tradingview/charting_library/"),
-      customCssUrl: withBasePath("/tradingview/chart.css"),
-      colorConfig: getColorConfig(),
-    },
-    sharePnLConfig: {
-      backgroundImages: getPnLBackgroundImages(),
-      color: "rgba(255, 255, 255, 0.98)",
-      profitColor: "rgba(41, 223, 169, 1)",
-      lossColor: "rgba(245, 97, 139, 1)",
-      brandColor: "rgba(255, 255, 255, 0.98)",
-      // ref
-      refLink: typeof window !== 'undefined' ? window.location.origin : undefined,
-      refSlogan: getRuntimeConfig('VITE_ORDERLY_BROKER_NAME') || "Orderly Network",
-    },
-  },
-};
+    };
   }, [t, isMobile]);
 };
