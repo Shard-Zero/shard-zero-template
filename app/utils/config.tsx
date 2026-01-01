@@ -277,6 +277,8 @@ export const useOrderlyConfig = () => {
               </div>
             </div>
           ),
+          logo: null,
+          copyright: null,
         },
       },
       orderlyAppProvider: {
