@@ -4,6 +4,7 @@
 declare global {
   interface Window {
     __RUNTIME_CONFIG__?: Record<string, string>;
+    __PREVIEW_LISTENER_ATTACHED__?: boolean;
   }
 }
 
@@ -12,10 +13,33 @@ declare global {
  * This allows changing config without rebuilds by modifying public/config.js
  */
 export function getRuntimeConfig(key: string): string | undefined {
-  if (typeof window !== "undefined" && window.__RUNTIME_CONFIG__) {
-    const value = window.__RUNTIME_CONFIG__[key];
-    if (value !== undefined && value !== "") {
-      return value;
+  if (typeof window !== "undefined") {
+    // START: Preview Mode Live Config Listener
+    // Allows the parent window (Creator App) to inject config updates in real-time
+    if (!window.__PREVIEW_LISTENER_ATTACHED__) {
+      window.addEventListener("message", (event) => {
+        if (event.data?.type === "UPDATE_CONFIG" && event.data?.config) {
+          console.log("Received live preview config update", event.data.config);
+          window.__RUNTIME_CONFIG__ = {
+            ...window.__RUNTIME_CONFIG__,
+            ...event.data.config
+          };
+          // Force React components to see the update (simple reload for now, or use a customized event)
+          // For now, we trust that components re-reading getRuntimeConfig (hooks) might pick it up,
+          // OR we force a soft refresh if needed.
+          // Ideally, dispatch a custom event that components listen to.
+          window.dispatchEvent(new Event("runtime-config-updated"));
+        }
+      });
+      window.__PREVIEW_LISTENER_ATTACHED__ = true;
+    }
+    // END: Preview Mode Live Config Listener
+
+    if (window.__RUNTIME_CONFIG__) {
+      const value = window.__RUNTIME_CONFIG__[key];
+      if (value !== undefined && value !== "") {
+        return value;
+      }
     }
   }
 
