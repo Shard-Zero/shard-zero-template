@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-console.log("Shard Zero Config Loaded: v1.2 - Footer Fix (Branding in Logo Prop)");
+console.log("Shard Zero Config Loaded: v1.3 - Modular Branding");
 
 import { useTranslation } from "@orderly.network/i18n";
 import { TradingPageProps } from "@orderly.network/trading";
@@ -12,6 +12,7 @@ import { PortfolioActiveIcon, PortfolioInactiveIcon, TradingActiveIcon, TradingI
 import { getRuntimeConfig, getRuntimeConfigBoolean, getRuntimeConfigNumber } from "./runtime-config";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import PriceCarousel from "../components/branding/PriceCarousel";
+import { getAppIcons, getNavbarLogo, getSocialLinks } from "../configs/branding";
 
 interface MainNavItem {
   name: string;
@@ -235,65 +236,65 @@ export const useOrderlyConfig = () => {
     mainNavProps.customRender = (components) => {
       return (
         <Flex justify="between" className="oui-w-full">
-          import {getAppIcons, getNavbarLogo, getSocialLinks} from "../configs/branding";
-
-// ... [Keep other imports]
-
-// Inside useOrderlyConfig:
-    mainNavProps.customRender = (components) => {
-      return (
-          <Flex justify="between" className="oui-w-full">
-            <Flex
-              itemAlign={"center"}
-              className={cn(
-                "oui-gap-3",
-                "oui-overflow-hidden",
-              )}
-            >
-              <Link to="/" className="oui-flex oui-items-center oui-mr-4">
-                {getNavbarLogo(isMobile)}
-              </Link>
-              {components.mainNav}
-            </Flex>
-            {/* ... */}
+          <Flex
+            itemAlign={"center"}
+            className={cn(
+              "oui-gap-3",
+              "oui-overflow-hidden",
+            )}
+          >
+            <Link to="/" className="oui-flex oui-items-center oui-mr-4">
+              {getNavbarLogo(isMobile)}
+            </Link>
+            {components.mainNav}
           </Flex>
-          )
+
+          <Flex itemAlign={"center"} className="oui-gap-2">
+            {components.accountSummary}
+            {components.linkDevice}
+            {components.scanQRCode}
+            {components.languageSwitcher}
+            {components.subAccount}
+            {components.chainMenu}
+            {components.walletConnect}
+          </Flex>
+        </Flex>
+      )
     };
 
-          return {
-            scaffold: {
-            mainNavProps,
-            bottomNavProps: {
-            mainMenus: bottomNavMenus,
+    return {
+      scaffold: {
+        mainNavProps,
+        bottomNavProps: {
+          mainMenus: bottomNavMenus,
         },
-          footerProps: {
-            ...getSocialLinks(), // telegram, discord, twitter
-            trailing: (
-          <div className="oui-flex oui-items-center oui-gap-4 oui-flex-1 oui-min-w-0">
-            <PriceCarousel />
-            <div className="oui-flex oui-items-center oui-gap-1 oui-text-2xs oui-text-base-contrast-54 oui-whitespace-nowrap">
-              <span>Powered by</span>
-              <span className="oui-font-bold">ShardLabs</span>
+        footerProps: {
+          ...getSocialLinks(),
+          trailing: (
+            <div className="oui-flex oui-items-center oui-gap-4 oui-flex-1 oui-min-w-0">
+              <PriceCarousel />
+              <div className="oui-flex oui-items-center oui-gap-1 oui-text-2xs oui-text-base-contrast-54 oui-whitespace-nowrap">
+                <span>Powered by</span>
+                <span className="oui-font-bold">ShardLabs</span>
+              </div>
             </div>
-          </div>
           ),
           logo: null,
           copyright: null,
         },
       },
-          orderlyAppProvider: {
-            appIcons: getAppIcons(),
+      orderlyAppProvider: {
+        appIcons: getAppIcons(),
       },
-          // ...
-          tradingPage: {
-            tradingViewConfig: {
-            scriptSRC: withBasePath("/tradingview/charting_library/charting_library.js"),
+      tradingPage: {
+        tradingViewConfig: {
+          scriptSRC: withBasePath("/tradingview/charting_library/charting_library.js"),
           library_path: withBasePath("/tradingview/charting_library/"),
           customCssUrl: withBasePath("/tradingview/chart.css"),
           colorConfig: getColorConfig(),
         },
-          sharePnLConfig: {
-            backgroundImages: getPnLBackgroundImages(),
+        sharePnLConfig: {
+          backgroundImages: getPnLBackgroundImages(),
           color: "rgba(255, 255, 255, 0.98)",
           profitColor: "rgba(41, 223, 169, 1)",
           lossColor: "rgba(245, 97, 139, 1)",
