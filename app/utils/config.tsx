@@ -11,7 +11,7 @@ import { withBasePath } from "./base-path";
 import { PortfolioActiveIcon, PortfolioInactiveIcon, TradingActiveIcon, TradingInactiveIcon, LeaderboardActiveIcon, LeaderboardInactiveIcon, MarketsActiveIcon, MarketsInactiveIcon, useScreen, Flex, cn } from "@orderly.network/ui";
 import { getRuntimeConfig, getRuntimeConfigBoolean, getRuntimeConfigNumber } from "./runtime-config";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import PriceCarousel from "@/components/PriceCarousel";
+import PriceCarousel from "../components/PriceCarousel";
 
 interface MainNavItem {
   name: string;
