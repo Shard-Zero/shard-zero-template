@@ -242,6 +242,14 @@ export const useOrderlyConfig = () => {
               "oui-overflow-hidden",
             )}
           >
+            <Link to="/" className="oui-flex oui-items-center oui-mr-4">
+              {isMobile && getRuntimeConfigBoolean('VITE_HAS_SECONDARY_LOGO')
+                ? <img src={withBasePath(getRuntimeConfig('VITE_SECONDARY_LOGO_PATH') || "/logo-secondary.webp")} alt="logo" style={{ height: "32px" }} />
+                : getRuntimeConfigBoolean('VITE_HAS_PRIMARY_LOGO')
+                  ? <img src={withBasePath(getRuntimeConfig('VITE_PRIMARY_LOGO_PATH') || "/logo.webp")} alt="logo" style={{ height: "32px", display: "block" }} />
+                  : <img src={withBasePath("/shard-logo.svg")} alt="logo" style={{ height: "24px", display: "block" }} />
+              }
+            </Link>
             {components.mainNav}
           </Flex>
 
